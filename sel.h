@@ -57,7 +57,12 @@ Matrix createLocalK(int element,mesh &m){
     //          (k/l)*[ 1 -1 ; -1 1 ]
     //Se extraen del objeto mesh los valores de k y l
     //float k = m.getParameter(THERMAL_CONDUCTIVITY), l = m.getParameter(ELEMENT_LENGTH);
-    float k = m.getParameter(THERMAL_CONDUCTIVITY), l = m.getNode(element+1).getX() - m.getNode(element).getX();
+    float k = m.getParameter(THERMAL_CONDUCTIVITY);
+    //Para obtener una longitud l, del objeto mesh se hace una diferencia del nodo siguiente menos el nodo actual.
+    //Se hace uso del metodo getNode() para obtener un nodo en particular. En este caso la posicion de iteracion del for en la funcion "crearSistemasLocales".
+    //Un nodo como se ha definido, por herencia de la clase item posee el metodo getX() el cual permite retornar el valor de la coordenada de dicho nodo.
+    //Para ejemplificar: Coordenada nodo siguiente - Coordenada nodo actual = longitud l entre ellos.
+    l = m.getNode(element+1).getX() - m.getNode(element).getX();
     //Se crean las filas
     row1.push_back(k/l); row1.push_back(-k/l);
     row2.push_back(-k/l); row2.push_back(k/l);
@@ -81,7 +86,13 @@ Vector createLocalb(int element,mesh &m){
 
     //Se extraen del objeto mesh los valores de Q y l
     //float Q = m.getParameter(HEAT_SOURCE), l = m.getParameter(ELEMENT_LENGTH);
-    float Q = m.getParameter(HEAT_SOURCE), l = m.getNode(element+1).getX() - m.getNode(element).getX();
+    float Q = m.getParameter(HEAT_SOURCE);
+    //Al igual que en la creacion de los istemas k locales, se realizan los siguientes pasos para obtener logitudes variables:
+     //Para obtener una longitud l, del objeto mesh se hace una diferencia del nodo siguiente menos el nodo actual.
+    //Se hace uso del metodo getNode() para obtener un nodo en particular. En este caso la posicion de iteracion del for en la funcion "crearSistemasLocales".
+    //Un nodo como se ha definido, por herencia de la clase item posee el metodo getX() el cual permite retornar el valor de la coordenada de dicho nodo.
+    //Para ejemplificar: Coordenada nodo siguiente - Coordenada nodo actual = longitud l entre ellos.
+    l = m.getNode(element+1).getX() - m.getNode(element).getX();
     //Se insertan los datos en el vector
     b.push_back(Q*l/2); b.push_back(Q*l/2);
 
